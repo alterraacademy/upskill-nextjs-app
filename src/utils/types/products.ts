@@ -1,3 +1,4 @@
+import { Product } from "@prisma/client";
 import * as z from "zod";
 
 const MAX_MB = 2;
@@ -38,3 +39,9 @@ export const productSchema = z.object({
 });
 
 export type ProductSchema = z.infer<typeof productSchema>;
+
+export interface ProductExtend extends Product {
+  category: {
+    name: string;
+  };
+}

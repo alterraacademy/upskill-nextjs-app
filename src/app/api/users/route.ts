@@ -22,8 +22,8 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json({
       message: "Successfully get users",
       metadata: {
-        totalCount,
-        totalPages,
+        total_count: totalCount,
+        total_pages: totalPages,
       },
       data,
     });
