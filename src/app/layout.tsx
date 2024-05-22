@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
+import { cn } from "@/lib/utils";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={cn("w-full h-dvh flex flex-col", inter.className)}>
+        <Navbar />
+        <div className="flex-1 overflow-auto">{children}</div>
+        <Footer />
+      </body>
     </html>
   );
 }
