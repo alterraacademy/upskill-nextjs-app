@@ -2,17 +2,13 @@ import { CartExtend, CartSchema } from "@/utils/types/carts";
 import Fetch from "./fetch";
 
 export const getCart = async () => {
-  try {
-    const response = await Fetch.get<CartExtend>("/api/carts", {
-      next: {
-        tags: ["cart"],
-      },
-    });
+  const response = await Fetch.get<CartExtend>("/api/carts", {
+    next: {
+      tags: ["cart"],
+    },
+  });
 
-    return response;
-  } catch (error) {
-    throw new Error((error as Error).message);
-  }
+  return response;
 };
 
 export const AddItemToCart = async (data: CartSchema) => {
