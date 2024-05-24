@@ -68,7 +68,7 @@ export const fileUploader = async (image: File, { tags, folder }: Options) => {
   });
 };
 
-export const formatCurrency = (number: Number) => {
+export const formatCurrency = (number: number) => {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
