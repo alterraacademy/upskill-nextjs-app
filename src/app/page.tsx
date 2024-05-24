@@ -1,4 +1,5 @@
 import { LaptopIcon, ComputerIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { CardContent, Card } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import { Input } from "@/components/ui/input";
 
 import { addItemToCart } from "@/utils/actions/cart";
 import { getProducts } from "@/utils/apis/products";
+import { formatCurrency } from "@/utils/functions";
 
 export default async function Home() {
   const result = await getProducts();
@@ -15,12 +17,13 @@ export default async function Home() {
     <main>
       <section className="w-full bg-gray-100 py-12 md:py-24 lg:py-32 dark:bg-gray-800">
         <div className="container grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-12">
-          <img
+          <Image
             alt="Hero"
             className="mx-auto aspect-square overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
             height="550"
-            src="https://generated.vusercontent.net/placeholder.svg"
             width="550"
+            src="/placeholder.svg"
+            priority
           />
           <div className="space-y-4">
             <div className="space-y-2">
@@ -55,15 +58,12 @@ export default async function Home() {
             {result.data.slice(0, 3).map((product) => (
               <Card key={product.id}>
                 <CardContent className="flex flex-col items-center justify-center gap-4 p-6">
-                  <img
+                  <Image
                     alt="Product"
                     className="aspect-square rounded-md object-contain"
-                    height="150"
-                    src={
-                      product.image ??
-                      "https://generated.vusercontent.net/placeholder.svg"
-                    }
                     width="150"
+                    height="150"
+                    src={product.image ?? "/placeholder.svg"}
                   />
                   <div className="space-y-1 text-center">
                     <Link
@@ -73,7 +73,7 @@ export default async function Home() {
                       {product.name}
                     </Link>
                     <p className="text-gray-500 dark:text-gray-400">
-                      {product.price}
+                      {formatCurrency(+product.price)}
                     </p>
                   </div>
                   <form action={addItemToCart}>
@@ -145,7 +145,7 @@ export default async function Home() {
               Upgrade Your Tech Today
             </h2>
             <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-              Don't settle for less, get the best computer technology for your
+              Dont settle for less, get the best computer technology for your
               needs.
             </p>
           </div>
