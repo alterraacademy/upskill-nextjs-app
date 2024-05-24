@@ -3,10 +3,6 @@ import { cookies } from "next/headers";
 import { IResponse, IResponseFailed, SearchParams } from "../types/api";
 
 const BASE_URL = process.env.BASE_URL;
-const SESSION_NAME =
-  process.env.NODE_ENV === "production"
-    ? "__Secure-authjs.sessiont-token"
-    : "authjs.session-token";
 
 interface RequestOptions extends RequestInit {
   query?: SearchParams;
@@ -18,11 +14,15 @@ async function request<TResponse>(
   requestOptions?: RequestOptions
 ) {
   try {
+    const sessionName =
+      process.env.NODE_ENV === "production"
+        ? "__Secure-authjs.sessiont-token"
+        : "authjs.session-token";
     const options: RequestInit = {
       ...requestOptions,
       method,
       headers: {
-        Cookie: `${SESSION_NAME}=${cookies().get(SESSION_NAME)?.value ?? ""}`,
+        Cookie: `${sessionName}=${cookies().get(sessionName)?.value ?? ""}`,
       },
     };
     const headers = new Headers(options.headers);
