@@ -1,86 +1,38 @@
-import { cookies } from "next/headers";
-
-import { IResponse } from "../types/api";
 import { CartExtend, CartSchema } from "@/utils/types/carts";
+import Fetch from "./fetch";
 
-export const getCart = async (params?: any) => {
+export const getCart = async () => {
   try {
-    const sessionCookie =
-      process.env.NODE_ENV === "production"
-        ? "__Secure-authjs.session-token"
-        : "authjs.session-token";
-    const response = await fetch("http://localhost:3000/api/carts", {
-      headers: {
-        Cookie: `${sessionCookie}=${cookies().get(sessionCookie)?.value ?? ""}`,
+    const response = await Fetch.get<CartExtend>("/api/carts", {
+      next: {
+        tags: ["cart"],
       },
-      next: { tags: ["cart"] },
     });
-    const result = await response.json();
 
-    return result as IResponse<CartExtend>;
+    return response;
   } catch (error) {
     throw new Error((error as Error).message);
   }
 };
 
-export const addCartItem = async (body: CartSchema) => {
-  try {
-    const sessionCookie =
-      process.env.NODE_ENV === "production"
-        ? "__Secure-authjs.session-token"
-        : "authjs.session-token";
-    const response = await fetch("http://localhost:3000/api/carts", {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        Cookie: `${sessionCookie}=${cookies().get(sessionCookie)?.value ?? ""}`,
-      },
-    });
-    const result = await response.json();
+export const AddItemToCart = async (data: CartSchema) => {
+  const response = await Fetch.create<null>("/api/carts", {
+    body: JSON.stringify(data),
+  });
 
-    return result as IResponse<CartExtend>;
-  } catch (error) {
-    throw new Error((error as Error).message);
-  }
+  return response;
 };
 
-export const editCartItem = async (item_id: number, data: CartSchema) => {
-  try {
-    const sessionCookie =
-      process.env.NODE_ENV === "production"
-        ? "__Secure-authjs.session-token"
-        : "authjs.session-token";
-    const response = await fetch(`http://localhost:3000/api/carts/${item_id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: {
-        Cookie: `${sessionCookie}=${cookies().get(sessionCookie)?.value ?? ""}`,
-      },
-    });
-    const result = await response.json();
+export const editItemFromCart = async (path: number, data: CartSchema) => {
+  const response = await Fetch.update<null>(`/api/carts/${path}`, {
+    body: JSON.stringify(data),
+  });
 
-    return result as IResponse<CartExtend>;
-  } catch (error) {
-    throw new Error((error as Error).message);
-  }
+  return response;
 };
 
-export const removeCartItem = async (item_id: number) => {
-  try {
-    const sessionCookie =
-      process.env.NODE_ENV === "production"
-        ? "__Secure-authjs.session-token"
-        : "authjs.session-token";
-    const response = await fetch(`http://localhost:3000/api/carts/${item_id}`, {
-      method: "DELETE",
-      headers: {
-        Cookie: `${sessionCookie}=${cookies().get(sessionCookie)?.value ?? ""}`,
-      },
-    });
-    const result = await response.json();
+export const removeItemFromCart = async (path: number) => {
+  const response = await Fetch.delete<null>(`/api/carts/${path}`);
 
-    return result as IResponse<CartExtend>;
-  } catch (error) {
-    throw new Error((error as Error).message);
-  }
+  return response;
 };

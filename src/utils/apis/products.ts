@@ -1,14 +1,16 @@
-import { IResponse, IResponsePagination } from "../types/api";
 import { ProductExtend } from "../types/products";
+import Fetch from "./fetch";
 
 export const getProducts = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/products", {
-      next: { tags: ["products"], revalidate: 30 },
+    const response = await Fetch.get<ProductExtend[]>("/api/products", {
+      next: {
+        tags: ["products"],
+        revalidate: 30,
+      },
     });
-    const result = await response.json();
 
-    return result as IResponsePagination<ProductExtend[]>;
+    return response;
   } catch (error) {
     throw new Error((error as Error).message);
   }
@@ -16,15 +18,17 @@ export const getProducts = async () => {
 
 export const getDetailProducts = async (product_id: string) => {
   try {
-    const response = await fetch(
-      `http://localhost:3000/api/products/${product_id}`,
+    const response = await Fetch.get<ProductExtend>(
+      `/api/products${product_id}`,
       {
-        next: { tags: [`products-${product_id}`] },
+        next: {
+          tags: [`products-${product_id}`],
+          revalidate: 30,
+        },
       }
     );
-    const result = await response.json();
 
-    return result as IResponse<ProductExtend>;
+    return response;
   } catch (error) {
     throw new Error((error as Error).message);
   }

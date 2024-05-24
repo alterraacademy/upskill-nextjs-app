@@ -13,9 +13,13 @@ interface MetaData {
 export interface IResponse<TData> {
   message: string;
   data: TData;
-  reason?: string | null;
+  metadata?: MetaData;
 }
 
-export interface IResponsePagination<TData> extends IResponse<TData> {
-  metadata: MetaData;
+export interface IResponseFailed extends Pick<IResponse<never>, "message"> {
+  reason?: Record<string, string[]> & string;
+}
+
+export interface SearchParams {
+  [key: string]: string | string[] | undefined;
 }

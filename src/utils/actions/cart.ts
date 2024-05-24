@@ -2,7 +2,11 @@
 
 import { redirect } from "next/navigation";
 
-import { addCartItem, removeCartItem, editCartItem } from "../apis/cart";
+import {
+  AddItemToCart,
+  editItemFromCart,
+  removeItemFromCart,
+} from "../apis/cart";
 import { revalidateTag } from "next/cache";
 import { CartSchema } from "../types/carts";
 
@@ -12,21 +16,21 @@ export async function addItemToCart(formData: FormData) {
     quantity: 1,
   };
 
-  addCartItem(payload);
+  AddItemToCart(payload);
 
   revalidateTag("cart");
   redirect("/cart");
 }
 
-export async function editItemFromCart(item_id: number, data: CartSchema) {
-  editCartItem(item_id, data);
+export async function handleEditItemCart(item_id: number, data: CartSchema) {
+  editItemFromCart(item_id, data);
 
   revalidateTag("cart");
   redirect("/cart");
 }
 
-export async function removeItemFromCart(item_id: number) {
-  removeCartItem(item_id);
+export async function handleRemoveItemCart(item_id: number) {
+  removeItemFromCart(item_id);
 
   revalidateTag("cart");
   redirect("/cart");

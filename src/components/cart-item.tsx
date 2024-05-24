@@ -9,17 +9,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { CartItem as ItemType } from "@/utils/types/carts";
-import { editItemFromCart, removeItemFromCart } from "@/utils/actions/cart";
+import { handleEditItemCart, handleRemoveItemCart } from "@/utils/actions/cart";
 
 interface Props {
   data: ItemType;
 }
 
 const CartItem = ({ data }: Props) => {
-  const removeItem = removeItemFromCart.bind(null, data.id);
+  const removeItem = handleRemoveItemCart.bind(null, data.id);
 
   const changeQuantity = useCallback(async function (quantity: number) {
-    await editItemFromCart(data.id, { quantity });
+    await handleEditItemCart(data.id, { quantity });
   }, []);
 
   const changeQuantityDebounce = useMemo(
